@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -25,6 +26,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class User {
 	
 	@Id
@@ -36,7 +38,6 @@ public class User {
     private String username;
 	
 	@NonNull
-	@JsonIgnore
 	private String password;
 	
 	@Column(name = "first_name")

@@ -23,7 +23,7 @@ import com.demo.springbootapis.service.CustomUserDetailsService;
         jsr250Enabled = true,
         prePostEnabled = true
 )
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired 
 	CustomUserDetailsService userDetailsService;
@@ -37,8 +37,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     }
 
 	@Bean
-	public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter();
+	public JwtAuthorizationFilter jwtAuthenticationFilter() {
+        return new JwtAuthorizationFilter();
     }
 	
 	@Override
@@ -56,7 +56,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             .authorizeRequests()
             .antMatchers(HttpMethod.POST, "/login").permitAll()
             .anyRequest()
-            .authenticated().and().formLogin();
-		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+            .authenticated()
+            .and()
+            .addFilterBefore(new JwtAuthenticationFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 }
