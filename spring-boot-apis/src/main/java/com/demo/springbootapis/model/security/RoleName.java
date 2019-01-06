@@ -1,6 +1,6 @@
 package com.demo.springbootapis.model.security;
 
 public enum RoleName {
-	ADMIN,
-	GUEST
+	ROLE_ADMIN,
+	ROLE_GUEST
 }

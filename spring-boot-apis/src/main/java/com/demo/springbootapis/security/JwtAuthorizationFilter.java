@@ -38,7 +38,6 @@ public class JwtAuthorizationFilter extends GenericFilterBean {
 				} 
 				if (userDetailService == null) {
 					userDetailService = webApplicationContext.getBean(CustomUserDetailsService.class);
-					
 				}
 			}
 			String token = getJwtFromRequest((HttpServletRequest)request);

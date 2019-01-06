@@ -57,8 +57,14 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 			jwtTokenProvider = webApplicationContext.getBean(JwtTokenProvider.class);
 		}
 		String token = jwtTokenProvider.generateToken(authentication); 
+		JwtAuthenticationToken jwtToken = new JwtAuthenticationToken(jwtTokenProvider.generateToken(authentication));
 		response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
 		response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonInString = mapper.writeValueAsString(jwtToken);
+        response.getWriter().print(jsonInString);
+        response.getWriter().flush();
 	}
 }

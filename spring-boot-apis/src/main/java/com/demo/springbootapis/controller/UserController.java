@@ -43,7 +43,7 @@ public class UserController {
         User newUser = new User(user.getUsername(), passwordEncoder.encode(user.getPassword()));
         
         //Default user role to be GUEST
-        Role userRole = roleRepository.findByName(RoleName.GUEST)
+        Role userRole = roleRepository.findByName(RoleName.ROLE_GUEST)
                 .orElseThrow(() -> new AppException("User Role not set."));
         newUser.setRoles(Collections.singletonList(userRole));
         

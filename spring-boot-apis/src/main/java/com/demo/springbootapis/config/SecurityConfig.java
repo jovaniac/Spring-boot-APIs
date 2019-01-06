@@ -1,4 +1,4 @@
-package com.demo.springbootapis.security;
+package com.demo.springbootapis.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +14,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.demo.springbootapis.security.JwtAuthenticationEntryPoint;
+import com.demo.springbootapis.security.JwtAuthenticationFilter;
+import com.demo.springbootapis.security.JwtAuthorizationFilter;
 import com.demo.springbootapis.service.CustomUserDetailsService;
 
 @Configuration
@@ -21,8 +24,7 @@ import com.demo.springbootapis.service.CustomUserDetailsService;
 @EnableGlobalMethodSecurity(
         securedEnabled = true,
         jsr250Enabled = true,
-        prePostEnabled = true
-)
+        prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired 
@@ -59,6 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authenticated()
             .and()
             .addFilterBefore(new JwtAuthenticationFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+            .httpBasic().and().csrf().disable();
 	}
 }
