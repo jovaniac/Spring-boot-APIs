@@ -1,11 +1,11 @@
 package com.demo.springbootapis.controller;
 
 import java.util.Collections;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +24,7 @@ import com.demo.springbootapis.service.CustomUserDetailsService;
 
 @RestController
 @RequestMapping("/users")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class UserController {
 	
 	@Autowired
