@@ -1,17 +1,17 @@
 package com.demo.springbootapis.security;
 
+import com.demo.springbootapis.model.security.UserPrincipal;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class JwtAuthenticationToken {
 	private String token;
-	
-	public JwtAuthenticationToken(String token) {
-		this.token = token;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
+	private UserPrincipal user;
 }

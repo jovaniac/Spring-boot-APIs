@@ -14,12 +14,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.demo.springbootapis.model.security.User;
+import com.demo.springbootapis.model.security.UserPrincipal;
 import com.demo.springbootapis.repository.SecurityConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -57,7 +59,8 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 			jwtTokenProvider = webApplicationContext.getBean(JwtTokenProvider.class);
 		}
 		String token = jwtTokenProvider.generateToken(authentication); 
-		JwtAuthenticationToken jwtToken = new JwtAuthenticationToken(jwtTokenProvider.generateToken(authentication));
+		
+		JwtAuthenticationToken jwtToken = new JwtAuthenticationToken(token, (UserPrincipal)authentication.getPrincipal());
 		response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
 		response.setStatus(HttpStatus.OK.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
