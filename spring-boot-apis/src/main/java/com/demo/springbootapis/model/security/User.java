@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,8 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,7 +46,20 @@ public class User {
 	@Column(name = "last_name")
 	private String lastName;
 	
+	@NonNull
+	@Column(name = "email")
+	private String email;
+	
+	@Column(name = "image_url")
+	private String imageUrl;
+	
 	private Boolean active;
+	
+	@NonNull
+	@Enumerated(EnumType.STRING)
+	private AuthProvider provider;
+	
+	private String providerId;
 	
 //	@Temporal(TemporalType.TIMESTAMP)
 //	@CreatedDate

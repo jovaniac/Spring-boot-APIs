@@ -11,5 +11,5 @@ import com.demo.springbootapis.model.security.RoleName;
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {
 
-	Optional<Role> findByName(RoleName roleName);
+	Optional<Role> findByName(RoleName name);
 }

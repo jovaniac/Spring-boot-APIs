@@ -1,4 +1,4 @@
-package com.demo.springbootapis.service;
+package com.demo.springbootapis.security.oauth2;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,14 +23,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findByUsername(username).orElseThrow(() -> 
 			new UsernameNotFoundException("User not found with username : " + username));
-		return UserPrincipal.createFrom(user);
+		return UserPrincipal.create(user);
 	}
 
 	public UserDetails loadUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(
             () -> new UsernameNotFoundException("User not found with id : " + id)
         );
-        return UserPrincipal.createFrom(user);
+        return UserPrincipal.create(user);
     }
 	
 	public boolean existsByUsername(String username) {

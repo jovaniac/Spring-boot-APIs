@@ -17,7 +17,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.demo.springbootapis.security.JwtAuthenticationEntryPoint;
 import com.demo.springbootapis.security.JwtAuthenticationFilter;
 import com.demo.springbootapis.security.JwtAuthorizationFilter;
-import com.demo.springbootapis.service.CustomUserDetailsService;
+import com.demo.springbootapis.security.oauth2.CustomOAuth2UserService;
+import com.demo.springbootapis.security.oauth2.CustomUserDetailsService;
+import com.demo.springbootapis.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.demo.springbootapis.security.oauth2.OAuth2AuthenticationFailureHandler;
+import com.demo.springbootapis.security.oauth2.OAuth2AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -33,6 +37,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	JwtAuthenticationEntryPoint authEntryPoint;
 	
+	@Autowired
+    private CustomUserDetailsService customUserDetailsService;
+
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
+
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+
+    @Autowired
+    private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+    
+    @Autowired
+    private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+
+    @Bean
+    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository();
+    }
+    
 	@Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -62,6 +86,71 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .addFilterBefore(new JwtAuthenticationFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(new JwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
-            .httpBasic().and().csrf().disable();
+            .httpBasic().and().csrf().disable()
+            .oauth2Login()
+			    .authorizationEndpoint()
+			    .baseUri("/oauth2/authorize")
+			    .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+			    .and()
+			.redirectionEndpoint()
+			    .baseUri("/login/oauth2/code/*")
+			    .and()
+			.userInfoEndpoint()
+			    .userService(customOAuth2UserService)
+			    .and()
+			.successHandler(oAuth2AuthenticationSuccessHandler)
+			.failureHandler(oAuth2AuthenticationFailureHandler);
 	}
+//	
+//	@Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http
+//                .cors()
+//                    .and()
+//                .sessionManagement()
+//                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                    .and()
+//                .csrf()
+//                    .disable()
+//                .formLogin()
+//                    .disable()
+//                .httpBasic()
+//                    .disable()
+////                .exceptionHandling()
+////                    .authenticationEntryPoint(new RestAuthenticationEntryPoint())
+////                    .and()
+//                .authorizeRequests()
+//                    .antMatchers("/",
+//                        "/error",
+//                        "/favicon.ico",
+//                        "/**/*.png",
+//                        "/**/*.gif",
+//                        "/**/*.svg",
+//                        "/**/*.jpg",
+//                        "/**/*.html",
+//                        "/**/*.css",
+//                        "/**/*.js")
+//                        .permitAll()
+//                    .antMatchers("/auth/**", "/oauth2/**")
+//                        .permitAll()
+//                    .anyRequest()
+//                        .authenticated()
+//                    .and()
+//                .oauth2Login()
+//                    .authorizationEndpoint()
+//                        .baseUri("/oauth2/authorize")
+//                        .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+//                        .and()
+//                    .redirectionEndpoint()
+//                        .baseUri("/login/oauth2/code/*")
+//                        .and()
+//                    .userInfoEndpoint()
+//                        .userService(customOAuth2UserService)
+//                        .and()
+//                    .successHandler(oAuth2AuthenticationSuccessHandler)
+//                    .failureHandler(oAuth2AuthenticationFailureHandler);
+//
+//        // Add our custom Token based authentication filter
+//        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//    }
 }

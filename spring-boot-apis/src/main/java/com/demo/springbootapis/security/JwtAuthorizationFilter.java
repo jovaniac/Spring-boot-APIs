@@ -19,7 +19,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 import com.demo.springbootapis.repository.SecurityConstants;
-import com.demo.springbootapis.service.CustomUserDetailsService;
+import com.demo.springbootapis.security.oauth2.CustomUserDetailsService;
 
 public class JwtAuthorizationFilter extends GenericFilterBean {
 	
