@@ -11,6 +11,8 @@ import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import com.demo.springbootapis.model.audit.UserDateAudit;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +20,7 @@ import lombok.Setter;
 @Table(name="app_role")
 @Getter
 @Setter
-public class Role implements GrantedAuthority {
+public class Role extends UserDateAudit implements GrantedAuthority {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,22 +39,4 @@ public class Role implements GrantedAuthority {
 	public String getAuthority() {
 		return name.name();
 	}
-		
-//	@Override
-//	public String getAuthority() {
-//		return name.name();
-//	}
-//	@Temporal(TemporalType.TIMESTAMP)
-//	@CreatedDate
-//	@Column(name = "created_on")
-//	private Date createdOn;
-//	
-//	@LastModifiedDate
-//	@Column(name = "updated_on")
-//	private Date updatedOn;
-	
-//	@OneToOne(fetch = FetchType.LAZY)
-//	@JoinTable(name = "app_user", 
-//			joinColumns=@JoinColumn(name = "updatedBy", referencedColumnName = "id"))
-//	private UserInfo updatedBy;
 }

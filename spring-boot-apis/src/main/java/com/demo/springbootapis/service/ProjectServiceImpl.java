@@ -45,10 +45,6 @@ public class ProjectServiceImpl implements ProjectService{
 		project.setDueDate(info.getDueDate());
 		project.setEstimatedCost(info.getEstimatedCost());
 		project.setProjectStatus(info.getProjectStatus());
-		project.setCreatedOn(info.getCreatedOn());
-		project.setCreatedBy(info.getCreatedBy());
-		project.setUpdatedOn(info.getCreatedOn());
-		project.setLastUpdatedBy(info.getLastUpdatedBy());
 
 		return repository.save(project);
 	}
@@ -57,7 +53,6 @@ public class ProjectServiceImpl implements ProjectService{
 	public void deleteProject(Integer id) {
 		ProjectInfo project = repository.findById(id).get();
 		if (project != null) {
-			project.setLastUpdatedBy(userID);
 			project.setStatusId(Enums.PStatus.DELETED.getValue());
 			repository.save(project);
 		}

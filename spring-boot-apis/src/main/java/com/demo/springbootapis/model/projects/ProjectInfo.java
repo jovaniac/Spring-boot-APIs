@@ -24,6 +24,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.demo.springbootapis.model.audit.UserDateAudit;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,7 +36,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProjectInfo {
+public class ProjectInfo extends UserDateAudit {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,19 +72,4 @@ public class ProjectInfo {
 	@OneToOne
 	@JoinColumn(name="status_id", insertable=false, updatable=false)
 	private ProjectStatus projectStatus;
-	
-	@Temporal(TemporalType.TIMESTAMP)
-	@CreatedDate
-	@Column(name = "created_on")
-	private Date createdOn;
-	
-	@Column(name = "created_by")
-	private String createdBy;
-	
-	@LastModifiedDate
-	@Column(name = "updated_on")
-	private Date updatedOn;
-	
-	@Column(name = "lastupdated_by")
-	private String lastUpdatedBy;
 }

@@ -15,6 +15,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.demo.springbootapis.model.audit.UserDateAudit;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -27,7 +29,7 @@ import lombok.Setter;
 @Setter
 @RequiredArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User extends UserDateAudit {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -60,20 +62,6 @@ public class User {
 	private AuthProvider provider;
 	
 	private String providerId;
-	
-//	@Temporal(TemporalType.TIMESTAMP)
-//	@CreatedDate
-//	@Column(name = "created_on")
-//	private Date createdOn;
-//	
-//	@LastModifiedDate
-//	@Column(name = "updated_on")
-//	private Date updatedOn;
-	
-//	@OneToOne(fetch = FetchType.LAZY)
-//	@JoinTable(name = "app_user", 
-//			joinColumns=@JoinColumn(name = "updatedBy", referencedColumnName = "id"))
-//	private UserInfo updatedBy;
 	
 	/**
      * Roles are being eagerly loaded here because they are a fairly small collection of items for this example.

@@ -1,4 +1,4 @@
-package com.demo.springbootapis.model;
+package com.demo.springbootapis.model.audit;
 
 import java.time.Instant;
 
@@ -18,7 +18,7 @@ import lombok.Setter;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(
-        value = {"createdAt", "updatedAt"},
+        value = {"createdOn", "updatedOn"},
         allowGetters = true
 )
 @Getter
@@ -27,9 +27,9 @@ public abstract class DateAudit {
 
 	@CreatedDate
     @Column(name = "created_on", nullable = false, updatable = false)
-    private Instant createdAt;
+    private Instant createdOn;
 
     @LastModifiedDate
     @Column(name = "updated_on", nullable = false)
-    private Instant updatedAt;
+    private Instant updatedOn;
 }

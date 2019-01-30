@@ -30,19 +30,19 @@ public class ContactUsController {
 	ContactService contactService;
 	
 	//Get All contact note messages
-	@GetMapping("/messages")
+	@GetMapping()
 	public List<ContactUsInfo> getAllMessages() {
 		return contactService.getAllMessages();
 	}
 	
 	//Create a new note message
-	@PostMapping("/messages")
+	@PostMapping()
 	public ContactUsInfo createMessage(@Valid @RequestBody ContactUsInfo info) {
 		return contactService.createMessage(info);
 	}
 	
 	//Get a single not message
-	@GetMapping("/messages/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<ContactUsInfo> getMessageById(@PathVariable(value = "id") Integer id) {
 		ContactUsInfo message = contactService.getMessageById(id);
 		if (message == null) {
@@ -52,13 +52,13 @@ public class ContactUsController {
 	}
 	
 	//Update a note message
-	@PutMapping("/messages/{id}")
+	@PutMapping("/{id}")
 	public ContactUsInfo updateMessage(@PathVariable(value = "id") Integer id, @Valid @RequestBody ContactUsInfo info) {
 		return contactService.updateMessage(info);
 	}
 	
 	//Delete a note (set as resolved and leave in database)
-	@DeleteMapping("/messages/{id}")
+	@DeleteMapping("/{id}")
 	@ResponseStatus(value=HttpStatus.NO_CONTENT)
 	public void deleteMessage(@PathVariable(value = "id") Integer id) {
 		contactService.deleteMessage(id);
