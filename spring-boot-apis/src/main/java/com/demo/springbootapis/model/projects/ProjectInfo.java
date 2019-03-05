@@ -57,7 +57,6 @@ public class ProjectInfo extends UserDateAudit {
 	@Column(name = "required_skills")
 	private String requiredSkills;
 	
-	@FutureOrPresent
 	@Column(name = "due_date")
 	private Date dueDate;
 	

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.demo.springbootapis.aop.LogExecutionTime;
 import com.demo.springbootapis.model.projects.Enums;
 import com.demo.springbootapis.model.projects.Enums.PStatus;
 import com.demo.springbootapis.model.projects.ProjectInfo;
@@ -19,6 +20,7 @@ public class ProjectServiceImpl implements ProjectService{
 	String userID = "1";//This should get from JWT token
 	
 	@Override
+	@LogExecutionTime
 	public List<ProjectInfo> getAllProjects() {
 		return repository.findAllByStatusIdNotOrderByDueDateAsc(PStatus.DELETED.getValue());
 	}
