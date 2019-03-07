@@ -1,0 +1,27 @@
+version: '3'
+services:
+  database:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root123
+      - MYSQL_USER=app_user
+      - MYSQL_PASSWORD=test123
+      - MYSQL_DATABASE=my_database
+    volumes:
+      - ./sql-scripts:/docker-entrypoint-initdb.d
+      
+  spring-boot-jpa-app:
+    image: spring-boot-apis
+    depends_on:
+      - database
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/my_database?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=app_user
+      - SPRING_DATASOURCE_PASSWORD=test123
+    ports:
+      - 8080:8080
+    volumes:
+      - /data/spring-boot-apis
