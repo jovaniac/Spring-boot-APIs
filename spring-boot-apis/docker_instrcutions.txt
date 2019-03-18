@@ -1,0 +1,11 @@
+This file Describe How to build and Run MySQL and Spring-boot-apis images.
+
+Run below command in console: 
+
+1, mvn clean package                    <--- Build Spring-boot-apis jar file
+2, docker build -t spring-boot-apis .   <--- Build Spring-boot-apis image
+3, docker-compose up                    <--- Build the images and run services in docker containers
+
+Some Useful Commands
+1, docker images ls                     <--- List all images
+2, docker rmi $(docker images -q)       <--- Delete all images
