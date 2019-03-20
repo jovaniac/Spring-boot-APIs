@@ -28,4 +28,4 @@
 /logs/
 
 ### Database data ###
-/database/data/*
+#/database/data/*
