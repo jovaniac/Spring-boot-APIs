@@ -1,31 +1,25 @@
 version: '3'
 services:
-  database:
-    image: mysql:latest
-    restart: always
-    environment:
-      - MYSQL_ROOT_PASSWORD=root123
-      - MYSQL_USER=app_user
-      - MYSQL_PASSWORD=test123
-      - MYSQL_DATABASE=my_database
+  angular-ui:
+    image: victoryssmile/angular-app:monolithic
     ports: 
-      - "3308:3306"
-    volumes:
-      - "./database/sql-scripts:/docker-entrypoint-initdb.d"
-      - "./database/data:/var/lib/mysql:rw"
+      - "80:80"
+    networks:
+      - emp-network
+    depends_on:
+      - spring-boot-jpa-app
       
   spring-boot-jpa-app:
-    image: spring-boot-apis
-    depends_on:
-      - database
-    build:
-      context: ./
-      dockerfile: Dockerfile
+    image: victoryssmile/springboot-api-spring-boot-apis:0.0.1-SNAPSHOT
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/my_database?useSSL=false&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=app_user
-      - SPRING_DATASOURCE_PASSWORD=test123
+      - SPRING_DATASOURCE_URL=jdbc:mysql://aws-mysql.c8ebmuzjtso3.ca-central-1.rds.amazonaws.com:3306/my_database?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root12345
     ports:
       - 8080:8080
-    volumes:
-      - /data/spring-boot-apis
+    networks:
+      - emp-network
+      
+networks:
+  emp-network:
+    driver: bridge 
