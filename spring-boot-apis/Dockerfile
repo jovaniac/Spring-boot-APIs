@@ -11,4 +11,5 @@ ARG JAR_FILE=target/spring-boot-apis-0.0.1-SNAPSHOT.jar
 ADD ${JAR_FILE} spring-boot-apis.jar
 
 # Run the jar file 
-ENTRYPOINT ["java", "-jar", "/spring-boot-apis.jar"]
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-Dspring.profiles.active=cloud","-jar", "/spring-boot-apis.jar"]
+ 

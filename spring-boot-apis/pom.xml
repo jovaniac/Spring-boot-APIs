@@ -117,7 +117,7 @@
 				<artifactId>dockerfile-maven-plugin</artifactId>
 				<version>1.4.10</version>
 				<configuration>
-					<repository>victoryssmile/springboot-api-${project.artifactId}</repository>
+					<repository>victoryssmile/${project.artifactId}</repository>
 					<tag>${project.version}</tag>
 					<buildArgs>
 						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>

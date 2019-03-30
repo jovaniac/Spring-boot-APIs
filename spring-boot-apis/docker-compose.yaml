@@ -1,7 +1,7 @@
 version: '3'
 services:
   angular-ui:
-    image: victoryssmile/angular-app:monolithic
+    image: victoryssmile/angular-app:monolithic-cloud
     ports: 
       - "80:80"
     networks:
@@ -10,7 +10,7 @@ services:
       - spring-boot-jpa-app
       
   spring-boot-jpa-app:
-    image: victoryssmile/springboot-api-spring-boot-apis:0.0.1-SNAPSHOT
+    image: victoryssmile/spring-boot-apis:0.0.1-SNAPSHOT
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://aws-mysql.c8ebmuzjtso3.ca-central-1.rds.amazonaws.com:3306/my_database?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
