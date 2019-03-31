@@ -11,5 +11,7 @@
 5, Log4j
 6, Swagger
 7, Lombok
-8, JPA (Using Mysql, and AWS's RDS on cloud)
+8, JPA 
+9, Deployed to Cloud. (AWS EC2, RDS)
+10, Docker, Docker Compose
 </pre>
