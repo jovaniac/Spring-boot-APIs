@@ -39,7 +39,6 @@ public class User extends UserDateAudit {
 	@Column(name = "user_name")
     private String username;
 	
-	@NonNull
 	private String password;
 	
 	@Column(name = "first_name")
@@ -71,4 +70,12 @@ public class User extends UserDateAudit {
             joinColumns= @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private List<Role> roles;
+    
+    public User(@NonNull String username, String password, @NonNull String email, @NonNull AuthProvider provider) {
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.provider = provider;
+	}
+    
 }

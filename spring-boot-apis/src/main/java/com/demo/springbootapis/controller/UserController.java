@@ -2,7 +2,6 @@ package com.demo.springbootapis.controller;
 
 import java.util.Collections;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,19 +21,23 @@ import com.demo.springbootapis.repository.RoleRepository;
 import com.demo.springbootapis.security.CurrentUser;
 import com.demo.springbootapis.security.oauth2.CustomUserDetailsService;
 
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+
 
 @RestController
 @RequestMapping("/users")
 @PreAuthorize("hasRole('ROLE_ADMIN')")
+@RequiredArgsConstructor
 public class UserController {
 	
-	@Autowired
+	@NonNull
 	CustomUserDetailsService userService;
 	
-	@Autowired
+	@NonNull
     PasswordEncoder passwordEncoder;
 	
-	@Autowired
+	@NonNull
 	RoleRepository roleRepository;
 	
 	@PostMapping("/signup")
