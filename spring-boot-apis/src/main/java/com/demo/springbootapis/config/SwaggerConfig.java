@@ -57,7 +57,15 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Swagger APIs")
-                .description("This page lists all the rest apis for Spring-boot-apis App.")
+                .description("This page lists all the rest apis for Spring-boot-apis App. "
+                		+ "<br><br>"
+                		+ "To get Jwt Token: make a POST call on $domain:8080/login with username=test, password=12345."
+                		+ "<br>"
+                		+ "Eg: localhost:8080/login"
+                		+ "<br><br>"
+                		+ "Then enter the Bearer + the token into Authorize section."
+                		+ "<br>"
+                		+ "Eg: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyIiwidXNlcm5hbWUiOiJ0ZXN0MSI...")
                 .version("0.0.1-SNAPSHOT")
                 .build();
     }
