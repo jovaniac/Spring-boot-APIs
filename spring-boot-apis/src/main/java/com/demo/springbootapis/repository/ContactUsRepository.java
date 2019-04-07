@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.demo.springbootapis.model.ContactUsInfo;
 
 @Repository
-public interface ContactUsRepository extends JpaRepository<ContactUsInfo, Integer>{
-	
+public interface ContactUsRepository extends JpaRepository<ContactUsInfo, Integer> {
+
 }

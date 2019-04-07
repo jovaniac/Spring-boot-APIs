@@ -15,13 +15,12 @@ import com.demo.springbootapis.model.security.UserPrincipal;
 @Configuration
 @EnableJpaAuditing
 public class AuditingConfig {
-	
-	@Bean
-    public AuditorAware<Long> auditorProvider() {
-        return new SpringSecurityAuditAwareImpl();
-    }
-}
 
+	@Bean
+	public AuditorAware<Long> auditorProvider() {
+		return new SpringSecurityAuditAwareImpl();
+	}
+}
 
 class SpringSecurityAuditAwareImpl implements AuditorAware<Long> {
 
@@ -29,13 +28,12 @@ class SpringSecurityAuditAwareImpl implements AuditorAware<Long> {
 	public Optional<Long> getCurrentAuditor() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-		if (authentication == null ||
-                !authentication.isAuthenticated() ||
-                authentication instanceof AnonymousAuthenticationToken) {
-            return Optional.empty();
-        }
-		
-		UserPrincipal userPrincipal = (UserPrincipal)authentication.getPrincipal();
+		if (authentication == null || !authentication.isAuthenticated()
+				|| authentication instanceof AnonymousAuthenticationToken) {
+			return Optional.empty();
+		}
+
+		UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
 		return Optional.ofNullable(userPrincipal.getId());
 	}
 }

@@ -34,51 +34,56 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 	@NonNull
 	private UserRepository userRepository;
-	
+
 	@NonNull
 	RoleRepository roleRepository;
-	
+
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		OAuth2User oAuth2User = super.loadUser(userRequest);
-		
+
 		try {
-            return processOAuth2User(userRequest, oAuth2User);
-        } catch (AuthenticationException ex) {
-            throw ex;
-        } catch (Exception ex) {
-            // Throwing an instance of AuthenticationException will trigger the OAuth2AuthenticationFailureHandler
-            throw new InternalAuthenticationServiceException(ex.getMessage(), ex.getCause());
-        }
-		
+			return processOAuth2User(userRequest, oAuth2User);
+		} catch (AuthenticationException ex) {
+			throw ex;
+		} catch (Exception ex) {
+			// Throwing an instance of AuthenticationException will trigger the
+			// OAuth2AuthenticationFailureHandler
+			throw new InternalAuthenticationServiceException(ex.getMessage(), ex.getCause());
+		}
+
 	}
-	
+
 	private OAuth2User processOAuth2User(OAuth2UserRequest oAuth2UserRequest, OAuth2User oAuth2User) {
-		OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
-        if (StringUtils.isEmpty(oAuth2UserInfo.getEmail())) {
-        	throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
-        }
-        
-        Optional<User> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
-        User user = null;
-        if(userOptional.isPresent()) {//the user has registered before	
-        	user = userOptional.get();
-        	if (!user.getProvider().equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
-        		throw new OAuth2AuthenticationProcessingException("Looks like you're signed up with " +
-                        user.getProvider() + " account. Please use your " + user.getProvider() +
-                        " account to login.");
-        	}
-        	updateExistingUser(user, oAuth2UserInfo);
-        } else {//User not found, create a new user 
-        	user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
-        }
-        
-        return UserPrincipal.create(user, oAuth2User.getAttributes());
+		OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(
+				oAuth2UserRequest.getClientRegistration().getRegistrationId(), oAuth2User.getAttributes());
+		if (StringUtils.isEmpty(oAuth2UserInfo.getEmail())) {
+			throw new OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider");
+		}
+
+		Optional<User> userOptional = userRepository.findByEmail(oAuth2UserInfo.getEmail());
+		User user = null;
+		if (userOptional.isPresent()) {// the user has registered before
+			user = userOptional.get();
+			if (!user.getProvider()
+					.equals(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))) {
+				throw new OAuth2AuthenticationProcessingException(
+						"Looks like you're signed up with " + user.getProvider() + " account. Please use your "
+								+ user.getProvider() + " account to login.");
+			}
+			updateExistingUser(user, oAuth2UserInfo);
+		} else {// User not found, create a new user
+			user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo);
+		}
+
+		return UserPrincipal.create(user, oAuth2User.getAttributes());
 	}
-	
+
 	private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
 		User user = new User();
-		user.setUsername(RandomStringGenerator.getAlphaNumericString(25));//Since Username is required for UserPrincipl, we generate a random one.
+		// Since Username is required for UserPrincipl, we generate a random
+		// one.
+		user.setUsername(RandomStringGenerator.getAlphaNumericString(25));
 		user.setEmail(oAuth2UserInfo.getEmail());
 		user.setProvider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
 		user.setProviderId(oAuth2UserInfo.getId());
@@ -86,20 +91,21 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		user.setLastName(oAuth2UserInfo.getLastName());
 		user.setImageUrl(oAuth2UserInfo.getImageUrl());
 		user.setActive(true);
-		
-		// For demo purpose, set user to have admin role, so he/she can view all pages.
+
+		// For demo purpose, set user to have admin role, so he/she can view all
+		// pages.
 		Role userRole = roleRepository.findByName(RoleName.ROLE_ADMIN)
-                .orElseThrow(() -> new AppException("User Role not set."));
+				.orElseThrow(() -> new AppException("User Role not set."));
 		user.setRoles(Collections.singletonList(userRole));
-        
+
 		return userRepository.save(user);
 	}
-	
+
 	private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
 		existingUser.setFirstName(oAuth2UserInfo.getFirstName());
 		existingUser.setLastName(oAuth2UserInfo.getLastName());
 		existingUser.setImageUrl(oAuth2UserInfo.getImageUrl());
-		
+
 		return userRepository.save(existingUser);
 	}
 }

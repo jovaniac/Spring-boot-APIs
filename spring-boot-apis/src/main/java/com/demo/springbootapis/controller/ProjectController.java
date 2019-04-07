@@ -30,37 +30,37 @@ public class ProjectController {
 
 	@Autowired
 	ProjectService projectService;
-	
-	//Get All projects
+
+	// Get All projects
 	@GetMapping()
-//	@PreAuthorize("hasRole('ROLE_GUEST')")
+	// @PreAuthorize("hasRole('ROLE_GUEST')")
 	@LogExecutionTime
 	public List<ProjectInfo> getAllProjects(@CurrentUser UserPrincipal currentUser) {
 		return projectService.getAllProjects();
 	}
-	
-	//Create a new project
+
+	// Create a new project
 	@PostMapping()
 	public ProjectInfo createProject(@Valid @RequestBody ProjectInfo info) {
 		return projectService.createProject(info);
 	}
-	
-	//Get a single project
+
+	// Get a single project
 	@GetMapping("/{id}")
-//	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	// @PreAuthorize("hasRole('ROLE_ADMIN')")
 	public ProjectInfo getProjectById(@PathVariable(value = "id") Integer id) {
-		return  projectService.getProjectById(id);
+		return projectService.getProjectById(id);
 	}
-	
-	//Update a project
+
+	// Update a project
 	@PutMapping("/{id}")
 	public ProjectInfo updateProject(@PathVariable(value = "id") Integer id, @Valid @RequestBody ProjectInfo info) {
 		return projectService.updateProject(info);
 	}
-	
-	//Delete (set isActive to be false and leave in database)
+
+	// Delete (set isActive to be false and leave in database)
 	@DeleteMapping("/{id}")
-	@ResponseStatus(value=HttpStatus.NO_CONTENT)
+	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void deleteProject(@PathVariable(value = "id") Integer id) {
 		projectService.deleteProject(id);
 	}
