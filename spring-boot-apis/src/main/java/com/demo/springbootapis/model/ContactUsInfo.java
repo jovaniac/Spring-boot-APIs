@@ -21,40 +21,40 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="contact_us", catalog= "my_database")
+@Table(name = "contact_us", catalog = "my_database")
 @EntityListeners(AuditingEntityListener.class)
 @Setter
 @Getter
 @NoArgsConstructor
 public class ContactUsInfo extends UserDateAudit {
-	
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@NotNull
-	@Size(min=1, max=20)
+	@Size(min = 1, max = 20)
 	private String name;
-	
+
 	@Email
-	@Size(min=1, max=100)
+	@Size(min = 1, max = 100)
 	private String email;
-	
+
 	@NotNull
-	@Size(min=1, max=12)
+	@Size(min = 1, max = 12)
 	private String phoneNumber;
-	
+
 	@NotEmpty
-	@Size(min=1, max=50)
+	@Size(min = 1, max = 50)
 	private String subject;
-	
+
 	@NotEmpty
-	@Size(min=1, max=500)
+	@Size(min = 1, max = 500)
 	private String message;
-	
+
 	@Column(name = "resolved")
 	private Boolean isResolved;
-	
+
 	@Column(name = "resolved_by")
 	private String resovedBy;
 }

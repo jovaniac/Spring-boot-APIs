@@ -28,45 +28,45 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
 	JwtTokenProvider jwtTokenProvider;
 
-    public JwtAuthenticationFilter(String url, AuthenticationManager authenticationManager) {
-    	super(new AntPathRequestMatcher(url));
-        setAuthenticationManager(authenticationManager);
-    }
-    
-	@Override
-    public Authentication attemptAuthentication(HttpServletRequest req,
-                                                HttpServletResponse res) throws AuthenticationException {
-		try {
-            User creds = new ObjectMapper()
-                    .readValue(req.getInputStream(), User.class);
-
-            UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(creds.getUsername(), creds.getPassword());
-            return getAuthenticationManager().authenticate(token);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+	public JwtAuthenticationFilter(String url, AuthenticationManager authenticationManager) {
+		super(new AntPathRequestMatcher(url));
+		setAuthenticationManager(authenticationManager);
 	}
-	
+
 	@Override
-	 protected void successfulAuthentication(HttpServletRequest request, 
-			 HttpServletResponse response, FilterChain chain, 
-			 Authentication authentication)
-	 throws IOException, ServletException {
-		if (jwtTokenProvider==null) {
+	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
+			throws AuthenticationException {
+		try {
+			User creds = new ObjectMapper().readValue(req.getInputStream(), User.class);
+
+			UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(creds.getUsername(),
+					creds.getPassword());
+			return getAuthenticationManager().authenticate(token);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+			Authentication authentication) throws IOException, ServletException {
+		if (jwtTokenProvider == null) {
 			ServletContext servletContext = request.getServletContext();
-			WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+			WebApplicationContext webApplicationContext = WebApplicationContextUtils
+					.getWebApplicationContext(servletContext);
 			jwtTokenProvider = webApplicationContext.getBean(JwtTokenProvider.class);
 		}
-		String token = jwtTokenProvider.generateToken(authentication); 
-		
-		JwtAuthenticationToken jwtToken = new JwtAuthenticationToken(token, (UserPrincipal)authentication.getPrincipal());
+		String token = jwtTokenProvider.generateToken(authentication);
+
+		JwtAuthenticationToken jwtToken = new JwtAuthenticationToken(token,
+				(UserPrincipal) authentication.getPrincipal());
 		response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
 		response.setStatus(HttpStatus.OK.value());
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonInString = mapper.writeValueAsString(jwtToken);
-        response.getWriter().print(jsonInString);
-        response.getWriter().flush();
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonInString = mapper.writeValueAsString(jwtToken);
+		response.getWriter().print(jsonInString);
+		response.getWriter().flush();
 	}
 }

@@ -21,44 +21,47 @@ import com.demo.springbootapis.repository.SecurityConstants;
 import com.demo.springbootapis.security.oauth2.CustomUserDetailsService;
 
 public class JwtAuthorizationFilter extends GenericFilterBean {
-	
-    private JwtTokenProvider jwtTokenProvider;
-	
+
+	private JwtTokenProvider jwtTokenProvider;
+
 	private CustomUserDetailsService userDetailService;
-	
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
+			throws IOException, ServletException {
 		try {
-			//Initialize jwtTokenProvider and userDetailService
+			// Initialize jwtTokenProvider and userDetailService
 			if (jwtTokenProvider == null || userDetailService == null) {
 				ServletContext servletContext = request.getServletContext();
-				WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+				WebApplicationContext webApplicationContext = WebApplicationContextUtils
+						.getWebApplicationContext(servletContext);
 				if (jwtTokenProvider == null) {
 					jwtTokenProvider = webApplicationContext.getBean(JwtTokenProvider.class);
-				} 
+				}
 				if (userDetailService == null) {
 					userDetailService = webApplicationContext.getBean(CustomUserDetailsService.class);
 				}
 			}
-			String token = getJwtFromRequest((HttpServletRequest)request);
+			String token = getJwtFromRequest((HttpServletRequest) request);
 			if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token)) {
 				Long userID = jwtTokenProvider.getUserIdFromJWT(token);
-				
+
 				UserDetails userDetails = userDetailService.loadUserById(userID);
-				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+						userDetails, null, userDetails.getAuthorities());
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
 		} catch (Exception ex) {
 			logger.error("Could not set user authentication in security context", ex);
 		}
-		
+
 		filterChain.doFilter(request, response);
 	}
 
 	private String getJwtFromRequest(HttpServletRequest request) {
-        String bearerToken = request.getHeader(SecurityConstants.HEADER_STRING);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(SecurityConstants.TOKEN_PREFIX)) {
-            return bearerToken.substring(7, bearerToken.length());
-        }
-        return null;
-    }
+		String bearerToken = request.getHeader(SecurityConstants.HEADER_STRING);
+		if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(SecurityConstants.TOKEN_PREFIX)) {
+			return bearerToken.substring(7, bearerToken.length());
+		}
+		return null;
+	}
 }

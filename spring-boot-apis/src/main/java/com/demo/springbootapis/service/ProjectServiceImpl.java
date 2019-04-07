@@ -12,13 +12,13 @@ import com.demo.springbootapis.model.projects.ProjectInfo;
 import com.demo.springbootapis.repository.ProjectRepository;
 
 @Service
-public class ProjectServiceImpl implements ProjectService{
+public class ProjectServiceImpl implements ProjectService {
 
 	@Autowired
 	ProjectRepository repository;
-	
-	String userID = "1";//This should get from JWT token
-	
+
+	String userID = "1";// This should get from JWT token
+
 	@Override
 	@LogExecutionTime
 	public List<ProjectInfo> getAllProjects() {
@@ -41,7 +41,7 @@ public class ProjectServiceImpl implements ProjectService{
 		if (project == null) {
 			return null;
 		}
-		
+
 		project.setProjectName(info.getProjectName());
 		project.setProjectSummary(info.getProjectSummary());
 		project.setDueDate(info.getDueDate());

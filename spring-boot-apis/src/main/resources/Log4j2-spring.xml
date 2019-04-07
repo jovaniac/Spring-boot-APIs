@@ -9,38 +9,36 @@
 
 	<Appenders>
 		<Console name="ConsoleAppender" target="SYSTEM_OUT">
-			<PatternLayout pattern="${LOG_PATTERN}"/>
+			<PatternLayout pattern="${LOG_PATTERN}" />
 		</Console>
 
 		<RollingFile name="FileAppender" fileName="${BASE_PATH}/application.log"
-					filePattern="${BASE_PATH}/application-%d{yyyy-MM-dd}.log">
+			filePattern="${BASE_PATH}/application-%d{yyyy-MM-dd}.log">
 			<PatternLayout>
 				<Pattern>${LOG_PATTERN}</Pattern>
 			</PatternLayout>
 			<Policies>
-				<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+				<TimeBasedTriggeringPolicy interval="1"
+					modulate="true" />
 			</Policies>
-            <DefaultRolloverStrategy max="10"/>
+			<DefaultRolloverStrategy max="10" />
 		</RollingFile>
 	</Appenders>
 
 	<Loggers>
-		<!--
-		<Logger name="com.example.logging" level="debug" additivity="false">
-			<AppenderRef ref="ConsoleAppender"/>
-			<AppenderRef ref="FileAppender" />
-		</Logger>
-		-->
+		<!-- <Logger name="com.example.logging" level="debug" additivity="false"> 
+			<AppenderRef ref="ConsoleAppender"/> <AppenderRef ref="FileAppender" /> </Logger> -->
 
-		<AsyncLogger name="com.example.logging" level="debug" additivity="false">
+		<AsyncLogger name="com.example.logging" level="debug"
+			additivity="false">
 			<AppenderRef ref="ConsoleAppender" />
 			<AppenderRef ref="FileAppender" />
 		</AsyncLogger>
 
 		<Root level="info">
 			<AppenderRef ref="ConsoleAppender" />
-			<AppenderRef ref="FileAppender"/>
-        </Root>
+			<AppenderRef ref="FileAppender" />
+		</Root>
 	</Loggers>
 
 </Configuration>

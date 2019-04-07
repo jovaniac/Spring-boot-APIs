@@ -24,58 +24,57 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="app_user", catalog= "my_database")
+@Table(name = "app_user", catalog = "my_database")
 @Getter
 @Setter
 @RequiredArgsConstructor
 @NoArgsConstructor
 public class User extends UserDateAudit {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	@NonNull
 	@Column(name = "user_name")
-    private String username;
-	
+	private String username;
+
 	private String password;
-	
+
 	@Column(name = "first_name")
 	private String firstName;
-	
+
 	@Column(name = "last_name")
 	private String lastName;
-	
+
 	@NonNull
 	@Column(name = "email")
 	private String email;
-	
+
 	@Column(name = "image_url")
 	private String imageUrl;
-	
+
 	private Boolean active;
-	
+
 	@NonNull
 	@Enumerated(EnumType.STRING)
 	private AuthProvider provider;
-	
+
 	private String providerId;
-	
+
 	/**
-     * Roles are being eagerly loaded here because they are a fairly small collection of items for this example.
-     */
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role", 
-            joinColumns= @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private List<Role> roles;
-    
-    public User(@NonNull String username, String password, @NonNull String email, @NonNull AuthProvider provider) {
+	 * Roles are being eagerly loaded here because they are a fairly small
+	 * collection of items for this example.
+	 */
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+	private List<Role> roles;
+
+	public User(@NonNull String username, String password, @NonNull String email, @NonNull AuthProvider provider) {
 		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.provider = provider;
 	}
-    
+
 }
