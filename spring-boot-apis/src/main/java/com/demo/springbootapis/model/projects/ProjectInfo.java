@@ -2,7 +2,6 @@ package com.demo.springbootapis.model.projects;
 
 import java.math.BigDecimal;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -16,11 +15,8 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
-
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import com.demo.springbootapis.model.audit.UserDateAudit;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,37 +29,37 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProjectInfo extends UserDateAudit {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "project_id")
-	private Integer projectId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "project_id")
+  private Integer projectId;
 
-	@NotEmpty
-	@Size(max = 100)
-	@Column(name = "project_name")
-	private String projectName;
+  @NotEmpty
+  @Size(max = 100)
+  @Column(name = "project_name")
+  private String projectName;
 
-	@NotEmpty
-	@Size(max = 500)
-	@Column(name = "project_summary")
-	private String projectSummary;
+  @NotEmpty
+  @Size(max = 500)
+  @Column(name = "project_summary")
+  private String projectSummary;
 
-	@Size(max = 500)
-	@Column(name = "required_skills")
-	private String requiredSkills;
+  @Size(max = 500)
+  @Column(name = "required_skills")
+  private String requiredSkills;
 
-	@Column(name = "due_date")
-	private Date dueDate;
+  @Column(name = "due_date")
+  private Date dueDate;
 
-	@Digits(integer = 11, fraction = 2)
-	@PositiveOrZero
-	@Column(name = "estimated_cost")
-	private BigDecimal estimatedCost;
+  @Digits(integer = 11, fraction = 2)
+  @PositiveOrZero
+  @Column(name = "estimated_cost")
+  private BigDecimal estimatedCost;
 
-	@Column(name = "status_id")
-	private int statusId = 1;// Default status is Pending
+  @Column(name = "status_id")
+  private int statusId = 1;// Default status is Pending
 
-	@OneToOne
-	@JoinColumn(name = "status_id", insertable = false, updatable = false)
-	private ProjectStatus projectStatus;
+  @OneToOne
+  @JoinColumn(name = "status_id", insertable = false, updatable = false)
+  private ProjectStatus projectStatus;
 }
