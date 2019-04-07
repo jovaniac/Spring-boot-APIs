@@ -8,11 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import org.springframework.security.core.GrantedAuthority;
-
 import com.demo.springbootapis.model.audit.UserDateAudit;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,21 +19,21 @@ import lombok.Setter;
 @Setter
 public class Role extends UserDateAudit implements GrantedAuthority {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-	@Column(name = "role_name")
-	@Enumerated(EnumType.STRING)
-	private RoleName name;
+  @Column(name = "role_name")
+  @Enumerated(EnumType.STRING)
+  private RoleName name;
 
-	@Column(name = "description")
-	private String description;
+  @Column(name = "description")
+  private String description;
 
-	private Boolean active;
+  private Boolean active;
 
-	@Override
-	public String getAuthority() {
-		return name.name();
-	}
+  @Override
+  public String getAuthority() {
+    return name.name();
+  }
 }

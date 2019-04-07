@@ -1,17 +1,16 @@
 package com.demo.springbootapis.service;
 
 import java.util.List;
-
 import com.demo.springbootapis.model.ContactUsInfo;
 
 public interface ContactService {
-	List<ContactUsInfo> getAllMessages();
+  List<ContactUsInfo> getAllMessages();
 
-	ContactUsInfo createMessage(ContactUsInfo info);
+  ContactUsInfo createMessage(ContactUsInfo info);
 
-	ContactUsInfo getMessageById(Integer id);
+  ContactUsInfo getMessageById(Integer id);
 
-	ContactUsInfo updateMessage(ContactUsInfo info);
+  ContactUsInfo updateMessage(ContactUsInfo info);
 
-	void deleteMessage(Integer id);
+  void deleteMessage(Integer id);
 }
