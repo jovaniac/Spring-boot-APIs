@@ -14,7 +14,7 @@ import com.demo.springbootapis.config.AppProperties;
 
 @SpringBootApplication
 @EntityScan(basePackageClasses = { 
-		SpringBootApisApplication.class,
+		SpringBootApisApplication.class, 
 		Jsr310JpaConverters.class 
 })
 @EnableConfigurationProperties(AppProperties.class)
@@ -24,9 +24,8 @@ public class SpringBootApisApplication {
 	void init() {
 		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
 	}
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootApisApplication.class, args);
 	}
 }
-

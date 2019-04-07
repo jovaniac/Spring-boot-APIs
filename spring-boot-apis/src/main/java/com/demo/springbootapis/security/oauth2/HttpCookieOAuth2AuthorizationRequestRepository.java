@@ -14,11 +14,12 @@ import com.demo.springbootapis.util.CookieUtils;
 import com.nimbusds.oauth2.sdk.util.StringUtils;
 
 @Component
-public class HttpCookieOAuth2AuthorizationRequestRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
+public class HttpCookieOAuth2AuthorizationRequestRepository
+		implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 	public static final String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";
-    public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
-    private static final int cookieExpireSeconds = 180;
-    
+	public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
+	private static final int cookieExpireSeconds = 180;
+
 	@Override
 	public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
 		Optional<Cookie> cookie = CookieUtils.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
@@ -35,10 +36,10 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
 			HttpServletResponse response) {
 		if (authorizationRequest == null) {
 			CookieUtils.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
-            CookieUtils.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
-            return;
+			CookieUtils.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
+			return;
 		}
-		
+
 		String value = CookieUtils.serialize(authorizationRequest);
 		CookieUtils.addCookie(response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME, value, cookieExpireSeconds);
 		String redirectUriAfterLogin = request.getParameter(REDIRECT_URI_PARAM_COOKIE_NAME);
@@ -46,10 +47,10 @@ public class HttpCookieOAuth2AuthorizationRequestRepository implements Authoriza
 			CookieUtils.addCookie(response, REDIRECT_URI_PARAM_COOKIE_NAME, redirectUriAfterLogin, cookieExpireSeconds);
 		}
 	}
-    
+
 	public void removeAuthorizationRequestCookies(HttpServletRequest request, HttpServletResponse response) {
 		CookieUtils.deleteCookie(request, response, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME);
 		CookieUtils.deleteCookie(request, response, REDIRECT_URI_PARAM_COOKIE_NAME);
-		
+
 	}
 }

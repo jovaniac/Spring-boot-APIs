@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="app_role")
+@Table(name = "app_role")
 @Getter
 @Setter
 public class Role extends UserDateAudit implements GrantedAuthority {
@@ -25,12 +25,12 @@ public class Role extends UserDateAudit implements GrantedAuthority {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	 
-	@Column(name="role_name")
+
+	@Column(name = "role_name")
 	@Enumerated(EnumType.STRING)
 	private RoleName name;
 
-	@Column(name="description")
+	@Column(name = "description")
 	private String description;
 
 	private Boolean active;

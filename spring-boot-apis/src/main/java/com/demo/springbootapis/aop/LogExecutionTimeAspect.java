@@ -12,20 +12,22 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class LogExecutionTimeAspect {
-	
+
 	@Pointcut("@annotation(com.demo.springbootapis.aop.LogExecutionTime)")
-	public void loggExecutionAnnotationPointCut(){}
-	
+	public void loggExecutionAnnotationPointCut() {
+	}
+
 	@Pointcut("@target(org.springframework.stereotype.Service)")
-	public void serviceMethods() {}
-	
+	public void serviceMethods() {
+	}
+
 	@Around("loggExecutionAnnotationPointCut()")
-    public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable{
+	public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
 		long start = System.currentTimeMillis();
-		
+
 		Object proceed = joinPoint.proceed();
 		long executionTime = System.currentTimeMillis() - start;
-		
+
 		log.info(joinPoint.getSignature() + " executed in " + executionTime + "ms");
 		return proceed;
 	}

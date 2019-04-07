@@ -65,11 +65,11 @@ public class UserController {
 	public ResponseEntity<UserPrincipal> getCurrentUser(@CurrentUser UserPrincipal currentUser) {
 		return new ResponseEntity(currentUser, HttpStatus.OK);
 	}
-//	
+
 //	@GetMapping("/user/me")
-//    @PreAuthorize("hasRole('USER')")
-//    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
-//        return userRepository.findById(userPrincipal.getId())
-//                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
-//    }
+//  @PreAuthorize("hasRole('USER')")
+//  public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+//      return userRepository.findById(userPrincipal.getId())
+//              .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
+//  }
 }
