@@ -1,14 +1,26 @@
 version: '3'
 services:
   angular-ui:
-    image: victoryssmile/angular-app:monolithic-cloud
+    image: victoryssmile/angular-app:monolithic-ssl
     ports: 
       - "80:80"
+      - "443:443"
+    volumes:
+      - ./certificate/certbot/conf:/etc/letsencrypt
+      - ./certificate/certbot/www:/var/www/certbot
     networks:
       - emp-network
     depends_on:
       - spring-boot-jpa-app
-      
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - ./certificate/certbot/conf:/etc/letsencrypt
+      - ./certificate/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    
   spring-boot-jpa-app:
     image: victoryssmile/spring-boot-apis:0.0.1-SNAPSHOT
     environment:
