@@ -8,3 +8,6 @@ Run below command in console:
 Some Useful Commands
 1, docker images ls                                 <--- List all images
 2, docker rmi $(docker images -q)                   <--- Delete all images
+
+For the first time to run server, we need get SSL certificate.
+1, sudo ./init-letsencrypt.sh
