@@ -1,6 +1,6 @@
 #!/bin/bash
 
-domains=(kaihe.duckdns.org www.kaihe.duckdns.org)
+domains=(kaihetech.com www.kaihetech.com)
 rsa_key_size=4096
 data_path="./certificate/certbot"
 email="" # Adding a valid address is strongly recommended
